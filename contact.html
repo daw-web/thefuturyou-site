@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Start a negotiation — FUTUREYOU</title>
+<meta name="description" content="Tell FUTUREYOU what you're negotiating. We'll tell you if it's the right one to start with.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap nav-row">
+    <a class="wordmark" href="index.html">FUTURE<span>YOU</span></a>
+    <button class="menu-toggle" aria-expanded="false" aria-controls="nav-links" onclick="const n=document.getElementById('nav-links');const open=n.classList.toggle('open');this.setAttribute('aria-expanded',open);">MENU</button>
+    <nav class="links" id="nav-links">
+      <a href="index.html#idea">The idea</a>
+      <a href="index.html#how">How it works</a>
+      <a href="index.html#negotiation">Negotiation</a>
+      <a href="index.html#work">Work with us</a>
+      <a href="index.html#insights">Insights</a>
+    </nav>
+    <a class="btn btn-solid nav-cta" href="contact.html">Start a negotiation</a>
+  </div>
+</header>
+
+<section class="contact-hero">
+  <div class="wrap">
+    <div class="eyebrow-clause">CLAUSE 7 — <em>getting started</em></div>
+    <h1>Tell us what you're negotiating.</h1>
+    <p>A few details about the situation. We'll reply and tell you honestly whether it's the right place to start.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap contact-grid">
+    <form class="contact-form" onsubmit="event.preventDefault(); this.querySelector('.form-submit').innerHTML='<p style=&quot;font-family:var(--serif);font-size:19px;&quot;>Thank you — we\'ll be in touch within two business days.</p>';">
+      <div class="field">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="field">
+        <label for="engagement">What are you looking for?</label>
+        <select id="engagement" name="engagement" required>
+          <option value="" disabled selected>Select one</option>
+          <option value="single">Single Negotiation</option>
+          <option value="strategy">Strategy Sessions</option>
+          <option value="executive">Executive Advisory</option>
+          <option value="unsure">Not sure yet</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="situation">What's the situation?</label>
+        <textarea id="situation" name="situation" placeholder="The conversation, decision, or ask you're facing — as much or as little detail as you're comfortable with." required></textarea>
+      </div>
+      <div class="field">
+        <label for="timing">Timing</label>
+        <input type="text" id="timing" name="timing" placeholder="e.g. within two weeks, no fixed date yet">
+      </div>
+      <div class="form-submit">
+        <button class="btn btn-solid" type="submit">Send</button>
+        <p class="form-note">We read every enquiry personally. No forms get forwarded to a queue.</p>
+      </div>
+    </form>
+
+    <div class="side-block">
+      <h3>WHAT TO EXPECT</h3>
+      <ul>
+        <li><span class="n">01</span> A reply within two business days, from a person, not an autoresponder.</li>
+        <li><span class="n">02</span> An honest read on whether this is the highest-leverage negotiation to start with.</li>
+        <li><span class="n">03</span> If it's a fit, a short call to scope the engagement before anything is booked.</li>
+      </ul>
+      <h3>DIRECT</h3>
+      <p class="direct"><a href="mailto:hello@thefuturyou.com">hello@thefuturyou.com</a></p>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="footer-row">
+      <div class="footer-wordmark">FUTURE<span>YOU</span></div>
+      <div class="footer-links">
+        <a href="index.html#idea">The idea</a>
+        <a href="index.html#how">How it works</a>
+        <a href="index.html#work">Work with us</a>
+        <a href="index.html#insights">Insights</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+    <div class="footer-meta">FUTUREYOU — thefuturyou.com</div>
+  </div>
+</footer>
+
+</body>
+</html>
