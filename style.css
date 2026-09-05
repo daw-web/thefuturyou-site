@@ -83,13 +83,18 @@ header.site {
   background: rgba(246, 243, 236, 0.92);
   backdrop-filter: blur(6px);
   border-bottom: 1px solid var(--line);
+  transition: height 220ms ease, box-shadow 220ms ease;
 }
 .nav-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 76px;
+  transition: height 220ms ease;
 }
+header.site.is-scrolled .nav-row { height: 64px; }
+header.site.is-scrolled { box-shadow: 0 8px 24px rgba(20, 18, 15, 0.06); }
+
 .wordmark {
   font-family: var(--serif);
   font-weight: 600;
@@ -97,8 +102,11 @@ header.site {
   letter-spacing: -0.01em;
   text-decoration: none;
   color: var(--ink);
+  transition: letter-spacing 220ms ease;
 }
-.wordmark span { color: var(--redline); }
+.wordmark span { color: var(--redline); transition: color 220ms ease; }
+.wordmark:hover span { color: var(--ink); }
+.wordmark:hover { letter-spacing: 0.005em; }
 
 nav.links {
   display: flex;
@@ -115,13 +123,18 @@ nav.links a {
 }
 nav.links a:hover { color: var(--ink); }
 nav.links a.current { color: var(--ink); }
-nav.links a.current::after {
+nav.links a::after {
   content: "";
   position: absolute;
   left: 0; right: 0; bottom: -2px;
   height: 2px;
   background: var(--redline);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 260ms cubic-bezier(.4,0,.2,1);
 }
+nav.links a.current::after { transform: scaleX(1); }
+nav.links a:hover::after { transform: scaleX(1); }
 
 .btn {
   display: inline-flex;
@@ -134,9 +147,10 @@ nav.links a.current::after {
   padding: 11px 22px;
   border: 1px solid var(--ink);
   color: var(--ink);
-  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
-.btn:hover { background: var(--ink); color: var(--stone); }
+.btn:hover { background: var(--ink); color: var(--stone); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(20,18,15,0.18); }
+.btn:active { transform: translateY(0); box-shadow: none; }
 
 .btn-solid {
   background: var(--ink);
@@ -148,7 +162,7 @@ nav.links a.current::after {
   border-color: var(--line-on-ink);
   color: var(--stone);
 }
-.btn-ghost-onink:hover { background: var(--redline); border-color: var(--redline); color: var(--stone); }
+.btn-ghost-onink:hover { background: var(--redline); border-color: var(--redline); color: var(--stone); box-shadow: 0 6px 16px rgba(179,64,42,0.35); }
 
 .nav-cta { display: none; }
 @media (min-width: 720px) { .nav-cta { display: inline-flex; } }
@@ -161,7 +175,9 @@ nav.links a.current::after {
   font-family: var(--mono);
   font-size: 13px;
   cursor: pointer;
+  transition: background 160ms ease, color 160ms ease;
 }
+.menu-toggle:hover { background: var(--ink); color: var(--stone); }
 @media (min-width: 900px) { .menu-toggle { display: none; } nav.links { display: flex; } }
 @media (max-width: 899px) {
   nav.links {
@@ -246,6 +262,65 @@ h1.hero-line {
 }
 .hero-meta .v { font-size: 14.5px; color: var(--stone-dim); }
 
+/* stronger entrance for the headline specifically: it comes toward you, not just up */
+h1.hero-line.hero-anim { transform: translateY(24px) scale(0.96); }
+h1.hero-line.hero-anim.in-view { transform: none; }
+
+/* ---------- statement ticker (marquee, full-bleed under the hero copy) ---------- */
+.ticker {
+  overflow: hidden;
+  border-top: 1px solid var(--line-on-ink);
+  margin-top: 64px;
+  padding: 20px 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
+}
+.ticker-track {
+  display: flex;
+  width: max-content;
+  gap: 56px;
+  animation: ticker-scroll 38s linear infinite;
+}
+.ticker:hover .ticker-track,
+.ticker:focus-within .ticker-track { animation-play-state: paused; }
+.ticker-track span {
+  font-family: var(--mono);
+  font-size: 13.5px;
+  letter-spacing: 0.01em;
+  color: var(--stone-dim);
+  white-space: nowrap;
+}
+.ticker-track span em {
+  font-style: normal;
+  color: var(--redline);
+}
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track { animation: none; }
+}
+
+/* ---------- "comes out at you": scale + blur entrance for standout statements ---------- */
+.pop-in {
+  opacity: 0;
+  transform: scale(0.8);
+  filter: blur(6px);
+  transition: opacity 900ms cubic-bezier(.16,.84,.44,1),
+              transform 900ms cubic-bezier(.16,.84,.44,1),
+              filter 900ms cubic-bezier(.16,.84,.44,1);
+  will-change: opacity, transform, filter;
+}
+.pop-in.in-view {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .pop-in { opacity: 1; transform: none; filter: none; transition: none; }
+}
+
 /* ---------- section shell ---------- */
 section { padding: 92px 0; }
 section.tight { padding: 72px 0; }
@@ -303,7 +378,9 @@ h2.section-title {
   display: grid;
   grid-template-columns: 1fr 1fr;
   border-bottom: 1px solid var(--line);
+  transition: background 220ms ease, padding-left 220ms ease;
 }
+.not-row:hover { background: rgba(179, 64, 42, 0.045); }
 .not-row > div { padding: 18px 0; }
 .not-row .no { color: var(--stone-dim); }
 .not-row .no::before { content: "not "; color: var(--ink); font-style: italic; }
@@ -320,7 +397,9 @@ h2.section-title {
   font-size: 16.5px;
   border-left: 1px solid var(--redline-dim);
   padding-left: 20px;
+  transition: border-color 220ms ease;
 }
+.not-row:hover .yes { border-color: var(--redline); }
 
 /* ---------- process (six stages) ---------- */
 .process-list { border-top: 1px solid var(--line); }
@@ -330,13 +409,20 @@ h2.section-title {
   gap: 28px;
   padding: 30px 0;
   border-bottom: 1px solid var(--line);
+  transition: padding-left 240ms cubic-bezier(.4,0,.2,1), background 240ms ease;
+}
+.process-item:hover {
+  padding-left: 14px;
+  background: rgba(179, 64, 42, 0.04);
 }
 .process-item .num {
   font-family: var(--mono);
   font-size: 13px;
   color: var(--redline);
   padding-top: 4px;
+  transition: color 240ms ease;
 }
+.process-item:hover .num { color: var(--ink); }
 .process-item h3 {
   font-family: var(--serif);
   font-weight: 500;
@@ -399,7 +485,9 @@ h2.section-title {
   align-items: start;
   padding: 34px 0;
   border-bottom: 1px solid var(--line);
+  transition: background 220ms ease, padding-left 220ms ease;
 }
+.offer:hover { background: rgba(179, 64, 42, 0.04); padding-left: 14px; }
 .offer .name {
   font-family: var(--serif);
   font-size: 23px;
@@ -437,6 +525,14 @@ h2.section-title {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  transition: transform 240ms cubic-bezier(.4,0,.2,1), box-shadow 240ms ease, background 240ms ease;
+  position: relative;
+  z-index: 1;
+}
+.insight-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(20,18,15,0.10);
+  background: var(--paper);
 }
 .insight-tag {
   font-family: var(--mono);
@@ -501,8 +597,8 @@ footer.site {
 }
 .footer-wordmark span { color: var(--redline); }
 .footer-links { display: flex; gap: 26px; flex-wrap: wrap; }
-.footer-links a { font-size: 14px; text-decoration: none; color: var(--ink-soft); }
-.footer-links a:hover { color: var(--ink); }
+.footer-links a { font-size: 14px; text-decoration: none; color: var(--ink-soft); transition: color 160ms ease; }
+.footer-links a:hover { color: var(--redline); }
 .footer-meta {
   font-family: var(--mono);
   font-size: 12px;
@@ -542,7 +638,9 @@ form.contact-form { border-top: 1px solid var(--line); }
 .field {
   padding: 22px 0;
   border-bottom: 1px solid var(--line);
+  transition: background 200ms ease;
 }
+.field:focus-within { background: rgba(179, 64, 42, 0.04); }
 .field label {
   display: block;
   font-family: var(--mono);
@@ -589,3 +687,20 @@ form.contact-form { border-top: 1px solid var(--line); }
 }
 .side-block .direct a { color: var(--redline); text-decoration: none; }
 .side-block .direct a:hover { text-decoration: underline; }
+
+/* ============================================================
+   Scroll reveals + hero entrance (JS toggles .in-view)
+   ============================================================ */
+.reveal,
+.hero-anim {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 700ms cubic-bezier(.16,.84,.44,1),
+              transform 700ms cubic-bezier(.16,.84,.44,1);
+  will-change: opacity, transform;
+}
+.reveal.in-view,
+.hero-anim.in-view {
+  opacity: 1;
+  transform: none;
+}
